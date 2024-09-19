@@ -1,37 +1,22 @@
-"""
-Routes and views for the flask application.
-"""
+from flask import flash, render_template, redirect, request
+from FlaskExercise import app
 
-from datetime import datetime
-from flask import render_template
-from FlaskTemplate import app
 
 @app.route('/')
-@app.route('/home')
 def home():
-    """Renders the home page."""
+    log = request.values.get('log_button')
+    # TODO: Appropriately log the different button presses
+    #   with the appropriate log level.
+    if log:
+        if log == 'info':
+            app.logger.info('No issue.')
+        elif log == 'warning':
+            app.logger.warning('Warning occurred.')
+        elif log == 'error':
+            app.logger.error('Error occurred.')
+        elif log == 'critical':
+            app.logger.critical('Critical error occurred.')  # noqa: E501
     return render_template(
         'index.html',
-        title='Home Page',
-        year=datetime.now().year,
-    )
-
-@app.route('/contact')
-def contact():
-    """Renders the contact page."""
-    return render_template(
-        'contact.html',
-        title='Contact',
-        year=datetime.now().year,
-        message='Your contact page.'
-    )
-
-@app.route('/about')
-def about():
-    """Renders the about page."""
-    return render_template(
-        'about.html',
-        title='About',
-        year=datetime.now().year,
-        message='Your application description page.'
+        log=log
     )
